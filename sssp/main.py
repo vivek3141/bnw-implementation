@@ -1,18 +1,10 @@
 # Run all experiments and compare different neg-sssp methods
 
 """
-<<<<<<< HEAD:bnw/main.py
 1. BNW [Jonny]
 2. Bellman-Ford [Jonny]
 3. Dijkstra's (only non-negative edge weights) [Jonny]
 4. Linear-Programming
-=======
-1. BNW
-2. BETTER THAN BNW!!!: https://arxiv.org/abs/2304.05279
-2. Bellman-Ford
-3. Linear-Programming
-4. Dijkstra's (only non-negative edge weights)
->>>>>>> f4f0196f4b6be8dbdbbe65d972daa62597dca0ed:sssp/main.py
 5. Johnson-Dijktra
 6. Gabow's Scaling (only non-negative edge weights)
 7. Goldberg
