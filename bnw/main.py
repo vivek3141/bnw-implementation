@@ -1,10 +1,10 @@
 # Run all experiments and compare different neg-sssp methods
 
 """
-1. BNW
-2. Bellman-Ford
-3. Linear-Programming
-4. Dijkstra's (only non-negative edge weights)
+1. BNW [Jonny]
+2. Bellman-Ford [Jonny]
+3. Dijkstra's (only non-negative edge weights) [Jonny]
+4. Linear-Programming
 5. Johnson-Dijktra
 6. Gabow's Scaling (only non-negative edge weights)
 7. Goldberg
