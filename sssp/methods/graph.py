@@ -1,43 +1,38 @@
-from bellman_ford import bellman_ford
-
-# BNW graph structure
+from collections import defaultdict
 
 class Graph:
+    def __init__(self):
+        self.adj = defaultdict(list) # adjacency list
 
-    def __init__(self, n: int, withAllVertices: bool):
-        self.n = n # number of vertices
+    def add_edge(self, u, v, w):
+        self.adj[u].append((v, w))
 
-        self.v_max = n
+    def get_adj(self, u):
+        return self.adj[u]
 
-    def add_vertices(vertices_to_add: list):
-        # TODO
-        return
-
-    def add_vertex(v: int):
-        # TODO
-        return
-
-    def init_edges():
-        # TODO
-        return
+    def get_vertices(self):
+        return list(self.adj.keys())
     
-    def add_edges():
-        # TODO
-        return
+    def get_edges(self):
+        edges = []
+        for u in self.adj:
+            for v, w in self.adj[u]:
+                edges.append((u, v, w))
+        return edges
 
+    def get_num_vertices(self):
+        return len(self.adj)
+    
     """
-    TODO: need to move these methods elsewhere
+    Print graph of the format
+    u: v1(w1), v2(w2), ...
     """
-    # def compute_SCCs():
-    #     # TODO: use Kosarajus to find all SCCs
-    #     return
-
-    # def contains_neg_cycle():
-    #     # TODO: run bellman-ford on connected components
-    #     return
-  
-    def __str__():
-        # TODO: return string representation of the graph
-        return
-    
-    
+    def __str__(self):
+        s = ""
+        for u in self.adj:
+            s += str(u) + ": "
+            for v, w in self.adj[u]:
+                s += str(v) + "(" + str(w) + "), "
+            s += "\n"
+        return s
+ 
