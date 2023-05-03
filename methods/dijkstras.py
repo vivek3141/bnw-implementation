@@ -1,19 +1,19 @@
-from graph import Graph
+from utils.graph import Graph
 import heapq as hq
 
 """
-Run dijkstra's algorithm on a graph
-Input: Graph object, start node
-Output: Dictionary of shortest paths from start node to all other nodes
+Run Dijkstra's algorithm (with binary heap) on a graph
+Input: Graph object, source node
+Output: Dictionary of shortest paths from source node to all other nodes
 """
-def dijkstra(graph, start):
+def dijkstra(graph, source):
     assert isinstance(graph, Graph)
-    assert start in graph.get_vertices()
+    assert source in graph.get_vertices()
 
     dist = {v: float('inf') for v in graph.get_vertices()}
-    dist[start] = 0
+    dist[source] = 0
 
-    pq = [(0, start)]
+    pq = [(0, source)]
 
     while pq:
         cur_dist, node = hq.heappop(pq)
