@@ -4,10 +4,20 @@ class Graph:
     def __init__(self):
         self.adj = defaultdict(list) # adjacency list
         self.vertices = set()
+        self.num_vertices = 0
+        
+        # self.weight_scale = 1
+        # self.weight_shift = 0
 
     def add_edge(self, u, v, w):
-        self.vertices.add(u)
-        self.vertices.add(v)
+        assert u != v, "No self-loops"
+        
+        if u not in self.vertices:
+            self.vertices.add(u)
+            self.num_vertices += 1
+        if v not in self.vertices:
+            self.vertices.add(v)
+            self.num_vertices += 1
 
         self.adj[u].append((v, w))
 
@@ -15,7 +25,13 @@ class Graph:
         return self.adj[u]
 
     def get_vertices(self):
-        return sorted(list(self.vertices))
+        return self.vertices
+    
+    def get_any_vertex(self):
+        assert self.vertices
+        for v in self.vertices:
+            break
+        return v
 
     def get_edges(self):
         edges = []
@@ -25,7 +41,7 @@ class Graph:
         return edges
 
     def get_num_vertices(self):
-        return len(self.vertices)
+        return self.num_vertices
     
     """
     Print graph of the format
@@ -33,10 +49,11 @@ class Graph:
     """
     def __str__(self):
         s = ""
-        for u in self.get_vertices():
+        for u in sorted(list(self.vertices)):
             s += str(u) + ": "
             for v, w in self.get_adj(u):
                 s += str(v) + "(" + str(w) + "), "
             s += "\n"
         return s
- 
+            
+    
