@@ -10,17 +10,16 @@ def dijkstra(graph, source):
     assert isinstance(graph, Graph)
     assert source in graph.get_vertices()
 
-    dist = {v: float('inf') for v in graph.get_vertices()}
-    dist[source] = 0
-
+    dist = {}
     pq = [(0, source)]
 
     while pq:
         cur_dist, node = hq.heappop(pq)
-
+        if node in dist:
+            continue
+        dist[node] = cur_dist
         for child, weight in graph.get_adj(node):
-            if cur_dist + weight < dist[child]:
-                dist[child] = cur_dist + weight
+            if child not in dist or dist[node] + weight < dist[child]:
                 hq.heappush(pq, (cur_dist + weight, child))
 
     return dist
