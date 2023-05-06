@@ -1,42 +1,38 @@
+import sys
+import numpy as np
+import random
+from utils.find_sccs import find_sccs
 from utils.graph import *
 from methods.bnw.low_diam_decomp import *
-
-
-def test_dijkstra_distance():
-    G = Graph()
-    G.add_edge(1, 2, 5)
-    G.add_edge(2, 3, 3)
-    G.add_edge(1, 3, 9)
-    D = 10
-    source = 1
-    expected_result = {1: 0, 2: 5, 3: 8}
-    assert dijkstra_distance(G, D, source, G.get_adj) == expected_result
-
-def test_boundary():
-    G = Graph()
-    G.add_edge(1, 2, 5)
-    G.add_edge(2, 3, 3)
-    edges = G.get_edges()
-    S = {1, 3}
-    expected_result = {(1, 2, 5), (1, 3, 9)}
-    assert boundary(G, S, G.get_adj) == expected_result
+from methods.dijkstra import *
 
 def test_ldd():
-    G = Graph()
-    G.add_edge(0, 1, 5)
-    G.add_edge(1, 2, 3)
-    G.add_edge(0, 2, 9)
-    D = int(23)
-    c = 1
-    n = G.get_num_vertices()
-    expected_result = {(0, 1, 5), (1, 2, 3)}
-    result = ldd(G, D, c, n)
-    print(result)
-    assert ldd(G, D, c, n) == expected_result
+    n = 200
+    sys.setrecursionlimit(n*10)
+    random.seed(1337)
+    np.random.seed(1337)
+    G = generate_random_graph(n)
+    D = 500
+    E_res = ldd(G, D, n=n)
+    new_G = Graph()
+    for i in range(n):
+        new_G.add_vertex(i)
+
+    old_edges = set(G.get_edges())
+    for edge in E_res:
+        assert edge in old_edges
+    for u, v, w in G.get_edges():
+        if (u,v,w) not in E_res:
+            new_G.add_edge(u, v, w)
+
+    print(len(G.get_edges()), len(new_G.get_edges()), len(E_res), len(new_G.vertices))
+    for scc in find_sccs(new_G):
+        for node in scc:
+            dist = dijkstra(new_G, node)
+            for other in scc:
+                assert dist[other] <= D
 
 if __name__ == "__main__":
-    test_dijkstra_distance()
-#    test_boundary()
-#    test_ldd()
+    test_ldd()
     print("All tests passed!")
 

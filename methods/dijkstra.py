@@ -1,12 +1,12 @@
 from utils.graph import Graph
 import heapq as hq
 
-"""
-Run Dijkstra's algorithm (with binary heap) on a graph
-Input: Graph object, source node
-Output: Dictionary of shortest paths from source node to all other nodes
-"""
 def dijkstra(graph, source):
+    """
+    Run Dijkstra's algorithm (with binary heap) on a graph
+    Input: Graph object, source node
+    Output: Dictionary of shortest paths from source node to all other nodes
+    """
     assert isinstance(graph, Graph)
     assert source in graph.get_vertices()
 
@@ -19,7 +19,7 @@ def dijkstra(graph, source):
             continue
         dist[node] = cur_dist
         for child, weight in graph.get_adj(node):
-            if child not in dist or dist[node] + weight < dist[child]:
+            if child not in dist:
                 hq.heappush(pq, (cur_dist + weight, child))
 
     return dist

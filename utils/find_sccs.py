@@ -1,30 +1,29 @@
 from utils.graph import Graph
 
-"""
-Run Tarjan's algorithm on a graph
-Input: Graph object
-Output: List of SCCs
-"""
 def find_sccs(graph):
-    
+    """
+    Run Tarjan's algorithm on a graph
+    Input: Graph object
+    Output: List of SCCs
+    """
     def find_component(v, disc, low, on_stack, stack):
         nonlocal graph
         nonlocal time
         nonlocal all_sccs
-        
+
         disc[v] = time
         low[v] = time
         time += 1
         on_stack[v] = True
         stack.append(v)
-        
+
         for (u, w) in graph.get_adj(v):
             if disc[u] == -1:
                 find_component(u, disc, low, on_stack, stack)
                 low[v] = min(low[v], low[u])
             elif on_stack[u]:
                 low[v] = min(low[v], disc[u])
-        
+
         curr_scc = []
         w = -1
         if disc[v] == low[v]:
@@ -32,7 +31,7 @@ def find_sccs(graph):
                 w = stack.pop()
                 curr_scc.append(w)
                 on_stack[w] = False
-        
+
         if curr_scc:
             all_sccs.append(curr_scc)
 
@@ -46,7 +45,7 @@ def find_sccs(graph):
     for v in graph.get_vertices():
         if disc[v] == -1:
             find_component(v, disc, low, on_stack, stack)
-    
+
     return all_sccs
 
 if __name__ == '__main__':
@@ -58,10 +57,10 @@ if __name__ == '__main__':
     g1.add_edge(1, 4, 69)
     g1.add_edge(1, 6, 69)
     g1.add_edge(3, 5, 69)
-    g1.add_edge(4, 5, 69)   
+    g1.add_edge(4, 5, 69)
 
     print(f"SCCs of g1:", find_sccs(g1))
-    
+
     g2 = Graph()
     g2.add_edge(0, 1, 69)
     g2.add_edge(0, 3, 69)
