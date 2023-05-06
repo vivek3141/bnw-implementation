@@ -13,11 +13,10 @@ def test_ldd():
     np.random.seed(1337)
     G = generate_random_graph(n)
     D = 500
-    E_res = ldd(G, D, n=n)
+    E_res = ldd(G, D, G, n=n)
     new_G = Graph()
     for i in range(n):
         new_G.add_vertex(i)
-
     old_edges = set(G.get_edges())
     for edge in E_res:
         assert edge in old_edges

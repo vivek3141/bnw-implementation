@@ -1,57 +1,24 @@
 import numpy as np
 from numpy.random import choice, geometric
-import heapq as hq
 
 from utils.graph import Graph, SubGraph
 from utils.bnw_utils import *
 
-def dijkstra_distance(G: Graph, D: int, source: int, edges):
-    dist = {}
-    pq = [(0, source)]
 
-    while pq:
-        cur_dist, node = hq.heappop(pq)
-        if node in dist:
-            continue
-        dist[node] = cur_dist
-        for child, weight in edges(node):
-            if child not in dist and dist[node] + weight <= D:
-                hq.heappush(pq, (cur_dist + weight, child))
-
-    return dist
-
-def boundary(G: Graph, S: set):
-    edges = set()
-    for s in S:
-        for u, w in G.get_adj(s):
-            edges.add((s, u, w))
-    return edges
-
-def boundary_rev(G: Graph, S: set):
-    edges = set()
-    for s in S:
-        for u, w in G.get_rev(s):
-            edges.add((u, s, w))
-    return edges
-
-
-def ldd(G: Graph, D: int, c=1, n=None, parent=None):
+def ldd(G: SubGraph | Graph, D: int, G_0: Graph, c=1, n=None):
     """
     INPUT: an m-edge, n-vertex graph G = (V, E, w) with non-negative edge weight function
            w and a positive integer D
     OUTPUT: A set of edges E^rem with the following guarantees:
-            - Each SCC of G\ E^rem has weak diameter at most D; that is, if u,v are in the
+            - Each SCC of G \\ E^rem has weak diameter at most D; that is, if u,v are in the
               same SCC, then dist_G(u, v) ≤ D and dist_G(v, u) ≤ D.
             - For every e ∈ E, Pr[e ∈ E^rem] = O(w(e) * log^2(n) / D + n^(-10)). These
               probabilities are not guaranteed to be independent.
 
-    Algorithm 3 (pg. 16) as described in [this paper](https://arxiv.org/pdf/2203.03456.pdf).
+    Algorithm 3 (pg. 16) as described [here](https://arxiv.org/pdf/2203.03456.pdf#page=18).
     """
     if n is None:
         n = G.get_num_vertices()
-
-    if parent is None:
-        parent = G
 
     # Line 2: G_0 ← G, Erem ← ∅
     E_rem = set()
@@ -74,8 +41,8 @@ def ldd(G: Graph, D: int, c=1, n=None, parent=None):
 
     for i in range(len(S)):
         s = S[i]
-        ball_in = dijkstra_distance(G, D//4, s, G.get_rev)
-        ball_out = dijkstra_distance(G, D//4, s, G.get_adj)
+        ball_in = dijkstra_distance(D//4, s, G.get_rev)
+        ball_out = dijkstra_distance(D//4, s, G.get_adj)
         balls_in += [set(ball_in)]
         balls_out += [set(ball_out)]
         for v in ball_in:
@@ -109,7 +76,7 @@ def ldd(G: Graph, D: int, c=1, n=None, parent=None):
         # Line 13: Compute ball_*(v, Rv).
         # Line 14: E_boundary ← boundary(ball_*(v, Rv))
         edges = G.get_rev if v in light_in else G.get_adj
-        ball = set(dijkstra_distance(G, R_v, v, edges))
+        ball = set(dijkstra_distance(R_v, v, edges))
         E_boundary = boundary(G, ball) if v in light_in else boundary_rev(G, ball)
 
         # Line 15: Terminate
@@ -117,9 +84,9 @@ def ldd(G: Graph, D: int, c=1, n=None, parent=None):
             return G.get_edges()
 
         # Line 16: Recurse
-        E_recurse = ldd(SubGraph(parent, ball), D, c=c, n=n)
+        E_recurse = ldd(SubGraph(G_0, ball), D, G_0, c=c, n=n)
 
         E_rem = E_rem.union(E_boundary).union(E_recurse)
-        G = SubGraph(parent, vertices)
+        G = SubGraph(G_0, vertices)
 
     return E_rem

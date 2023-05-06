@@ -41,7 +41,7 @@ def find_sccs(graph):
     on_stack = {v: False for v in graph.get_vertices()}
     stack = []
 
-    all_sccs = []
+    all_sccs: list[list[int]] = []
     for v in graph.get_vertices():
         if disc[v] == -1:
             find_component(v, disc, low, on_stack, stack)
