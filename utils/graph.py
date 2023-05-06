@@ -61,8 +61,8 @@ class Graph:
             s += "\n"
         return s
 
-class SubGraph(Graph):
-    def __init__(self, parent: Graph, subset: set()):
+class SubGraph:
+    def __init__(self, parent: Graph, subset: set):
         self.parent = parent
         self.subset = subset
 
@@ -86,7 +86,7 @@ class SubGraph(Graph):
 
     def get_edges(self):
         edges = []
-        for u in self.vertices():
+        for u in self.get_vertices():
             for v, w in self.get_adj(u):
                 edges.append((u, v, w))
         return edges

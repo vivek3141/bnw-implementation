@@ -1,5 +1,6 @@
 from math import log, ceil
 from utils.graph import Graph
+from collections import defaultdict
 
 def get_modified_graph(G: Graph, scale=1, B=0, is_max_0=False, edges=None, phi=defaultdict(int)):
     G_modified = Graph()
@@ -36,12 +37,15 @@ def shared_elems(set1: set, set2: set):
 
 def ball(G: Graph, v, R: int, setting: str):
     # TODO: returns set of all vertices within distance R from v, setting ∈ {in, out, all}
+    pass
 
 def boundary(ball: set, setting: str):
     # TODO: returns set of all edges e=(u,v) across the ball, setting ∈ {in, out, all}
+    pass
 
 def remove_ball(G: Graph, ball: set):
     # TODO: returns copy of G with all vertices/edges in ball removed
+    pass
 
 """
 Helper Methods for Fix-DAG-Edges
@@ -49,5 +53,4 @@ Helper Methods for Fix-DAG-Edges
 
 def create_scc_dag(G: Graph, SCCs: list) -> Graph:
     # TODO: returns DAG of SCCs
-
-    
+    pass
