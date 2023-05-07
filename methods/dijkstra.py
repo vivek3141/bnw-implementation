@@ -16,21 +16,20 @@ def dijkstra(graph: Graph, source):
     assert isinstance(graph, Graph)
     assert source in graph.get_vertices()
 
-    dist = {v: 1e20 for v in graph.get_vertices()}
-    visited = {v: False for v in graph.get_vertices()}
+    dist = {}
     prev = {v: v for v in graph.get_vertices()}
-    pq = [(0, source)]
+    pq = [(0, source, source)]
 
     while pq:
-        cur_dist, node = hq.heappop(pq)
-        visited[node] = True
-
+        cur_dist, node, parent = hq.heappop(pq)
+        if node in dist:
+            continue
+        
+        dist[node] = cur_dist
+        prev[node] = parent
         for child, weight in graph.get_adj(node):
-            if not visited[child] and cur_dist + weight < dist[child]:
-                dist[child] = cur_dist + weight
-                prev[child] = node
-                
-                hq.heappush(pq, (dist[child], child))
+            if child not in dist:                
+                hq.heappush(pq, (cur_dist + weight, child, node))
     
     sp_tree = defaultdict(set)
     for curr_node, prev_node in prev.items():
