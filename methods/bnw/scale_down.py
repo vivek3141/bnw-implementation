@@ -33,6 +33,8 @@ def scale_down(G: Graph, Delta: int, B: int, n=None):
         # PHASE 0: Decompose V into SCCs V1, V2, ... with weak diameter dB in G #
         #########################################################################
 
+        print(G_geq0_B.get_num_vertices())
+
         # Line 4
         E_rem = ldd(G_geq0_B, d * B, G_geq0_B, n=n)
 
@@ -53,16 +55,13 @@ def scale_down(G: Graph, Delta: int, B: int, n=None):
 
         # PHASE 1: Make edges inside the SCCs G^B[V_i] non-negative
         # Line 6
-        H = Graph()
-        for u, v, w in G.get_edges():
-            if scc_map[u] == scc_map[v]:
-                G.add_edge(u,v,w)
+        H = get_modified_graph(G, edges=filter(lambda edge: scc_map[edge[0]] == scc_map[edge[1]], G.get_edges()))
 
         # Line 7
         phi_1 = scale_down(G=H, Delta=d, B=B)
 
         # PHASE 2: Make all edges in G^B \ E^rem non-negative
-        G_phi1_B_Erem = get_modified_graph(G=G, B=B, edges="TODO", phi=phi_1) # G_phi1^B \ E^rem
+        G_phi1_B_Erem = get_modified_graph(G=new_G, B=B, phi=phi_1)
         psi = fix_dag_edges(G=G_phi1_B_Erem, SCCs=sccs)
         phi_2 = add_price_fns(phi_1, psi)
 

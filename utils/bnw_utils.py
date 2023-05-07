@@ -11,6 +11,9 @@ def get_modified_graph(G: Graph, scale=1, B=0, is_max_0=False, edges=None, phi=d
     if not edges:
         edges = G.get_edges()
 
+    for vertex in G.get_vertices():
+        G_modified.add_vertex(vertex)
+
     for u, v, w in edges:
         w_new = w * scale # apply scaling
         if B and w_new < 0: # if B > 0, then do w^B(e) = w(e) + B if w(e) < 0
