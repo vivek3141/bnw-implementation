@@ -24,7 +24,7 @@ def bellman_ford(graph, source):
     # If can still update distances, then there exists a neg cycle
     for u, v, w in graph.get_edges():
         if u in dist and v in dist and dist[u] + w < dist[v]:
-            return -1
+            return -1, -1
 
     # Create shortest path tree from prev
     sp_tree = defaultdict(set)

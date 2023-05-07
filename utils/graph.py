@@ -32,7 +32,7 @@ class Graph:
         return self.vertices
 
     def get_any_vertex(self):
-        assert self.vertices
+        assert isinstance(self.vertices, set)
         v = None
         for v in self.vertices:
             break
@@ -71,16 +71,16 @@ class SubGraph:
         raise Exception("Cannot add edges on a sub-graph")
 
     def get_adj(self, u):
-        return [edge for edge in self.parent.adj[u] if edge[0] in self.subset]
+        return [edge for edge in self.parent.get_adj(u) if edge[0] in self.subset]
 
     def get_rev(self, u):
-        return [edge for edge in self.parent.rev[u] if edge[0] in self.subset]
+        return [edge for edge in self.parent.get_rev(u) if edge[0] in self.subset]
 
     def get_vertices(self):
         return self.subset
 
     def get_any_vertex(self):
-        assert self.subset
+        isinstance(self.subset, set)
         v = None
         for v in self.subset:
             break
