@@ -1,9 +1,10 @@
+from typing import Dict
 from utils.graph import Graph
 from copy import deepcopy
 import heapq as hq
 
 
-def elim_neg(G: Graph):
+def elim_neg(G: Graph) -> Dict:
     G_s = deepcopy(G) # not sure if this works lol
     for v in G.get_vertices():
         G_s.add_edge(-1, v, 0)

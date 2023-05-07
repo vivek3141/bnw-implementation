@@ -1,4 +1,4 @@
-from typing import Callable
+from typing import Callable, Union
 from math import log, ceil
 from utils.graph import Graph, SubGraph
 from collections import defaultdict
@@ -55,14 +55,14 @@ def dijkstra_distance(D: int, source: int, edges: Callable[[int], list[tuple[int
 
     return dist
 
-def boundary(G: Graph | SubGraph, S: set):
+def boundary(G: Union[Graph, SubGraph], S: set):
     edges = set()
     for s in S:
         for u, w in G.get_adj(s):
             edges.add((s, u, w))
     return edges
 
-def boundary_rev(G: Graph | SubGraph, S: set):
+def boundary_rev(G: Union[Graph, SubGraph], S: set):
     edges = set()
     for s in S:
         for u, w in G.get_rev(s):

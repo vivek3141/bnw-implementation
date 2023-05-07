@@ -1,9 +1,10 @@
+from typing import Dict
 from collections import defaultdict
 from utils.graph import Graph
 from utils.topo_sort import topo_sort
 from utils.bnw_utils import create_scc_dag
 
-def fix_dag_edges(G: Graph, SCCs: list): # maybe change SCCs to be dictionary?
+def fix_dag_edges(G: Graph, SCCs: list) -> Dict: # maybe change SCCs to be dictionary?
     vertex_to_scc = defaultdict(int)
     for i in range(len(SCCs)):
         scc = SCCs[i]

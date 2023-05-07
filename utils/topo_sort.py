@@ -1,6 +1,7 @@
+from typing import List
 from utils.graph import Graph
 
-def topo_sort(graph: Graph):
+def topo_sort(graph: Graph) -> List:
     visited = set()
     stack = []
 

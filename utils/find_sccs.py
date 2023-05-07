@@ -1,6 +1,7 @@
+from typing import List
 from utils.graph import Graph
 
-def find_sccs(graph):
+def find_sccs(graph: Graph) -> List[List[int]]:
     """
     Run Tarjan's algorithm on a graph
     Input: Graph object

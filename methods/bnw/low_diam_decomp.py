@@ -1,10 +1,10 @@
+from typing import Union, Set
 from numpy.random import choice, geometric
-
 from utils.graph import Graph, SubGraph
 from utils.bnw_utils import *
 
 
-def ldd(G: SubGraph | Graph, D: int, G_0: Graph, c=1, n=None):
+def ldd(G: Union[SubGraph, Graph], D: int, G_0: Graph, c=1, n=None) -> Set:
     """
     INPUT: an m-edge, n-vertex graph G = (V, E, w) with non-negative edge weight function
            w and a positive integer D

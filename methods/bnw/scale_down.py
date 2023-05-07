@@ -1,3 +1,4 @@
+from typing import Dict
 from methods.bnw.elim_neg import elim_neg
 from methods.bnw.fix_dag_edges import fix_dag_edges
 from methods.bnw.low_diam_decomp import ldd
@@ -5,7 +6,7 @@ from utils.graph import Graph
 from utils.find_sccs import find_sccs
 from utils.bnw_utils import *
 
-def scale_down(G: Graph, Delta: int, B: int, n=None):
+def scale_down(G: Graph, Delta: int, B: int, n=None) -> Dict:
     """
     INPUT REQUIREMENTS:
         (a) B is positive integer, w is integral, and w(e) ≥ −2B for all e ∈ E

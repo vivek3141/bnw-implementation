@@ -1,16 +1,17 @@
 # Full implementation of BNW, can reference https://github.com/nevingeorge/Negative-Weight-SSSP
 import math
+from typing import Union
 from methods.bnw.scale_down import scale_down
 from methods.dijkstra import dijkstra
 from utils.graph import Graph
 from utils.bnw_utils import *
 
-def bnw(G_in: Graph, source: int): # G_in = (V, E, w_in)
+def bnw(G_in: Graph, source: Union[str, int]): # G_in = (V, E, w_in)
     """Main Procedure for BNW Algorithm
 
     Args:
-        G_in (Graph): graph with integral, possibly negative edge weights in the range [-W, ... W]
-        s_in (_type_): source node
+        G_in: graph with integral, possibly negative edge weights in the range [-W, ... W]
+        s_in: source node
     """
     n = G_in.get_num_vertices()
 
