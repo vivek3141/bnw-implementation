@@ -18,6 +18,7 @@ def bnw(G_in: Graph, s_in: Union[str, int]): # G_in = (V, E, w_in)
         (2) shortest path tree
     """
     n = G_in.get_num_vertices()
+    print("G_in:", n)
 
     B = round_up_power_2(2*n) # rounds 2n to next power of 2
     phi = defaultdict(int, {v: 0 for v in G_in.get_vertices()})
@@ -28,8 +29,9 @@ def bnw(G_in: Graph, s_in: Union[str, int]): # G_in = (V, E, w_in)
         phi = add_price_fns(phi, psi)
 
     G_star = get_modified_graph(G_in, scale=1, B=0, edges=None, phi=phi)
+    print("G_star", G_star.get_num_vertices())
     _, sp_tree = dijkstra(G_star, s_in) # obtain the sp tree of G_in
-    dist = prev_to_distances(G_in, s_in, sp_tree)
+    dist = sp_tree_to_dist(G_in, s_in, sp_tree)
     
     return dist, sp_tree 
 

@@ -17,7 +17,7 @@ def test_bellman_ford():
     G.add_edge(4, 5, -1)
     G.add_edge(3, 1, 2)
 
-    dist = bellman_ford(G, 0)
+    dist, _ = bellman_ford(G, 0)
     assert dist == {0: 0, 1: -2, 2: 3, 3: 5, 4: 1, 5: -1}
 
 def test_bnw():
@@ -25,11 +25,18 @@ def test_bnw():
     np.random.seed(1337)
 
     G = generate_negative_random_graph(20)
-    dist1 = bellman_ford(G, 0)
-    dist2, _ = bnw(G, 0)
-    print(dist1)
-    print(dist2)
+    dist1, sp_tree1 = bellman_ford(G, 0)
+    dist2, sp_tree2 = bnw(G, 0)
+    print("Shortest Path Distances:")
+    print("BF:", dist1)
+    print("BNW:", dist2)
+    
+    print("\nShortest Path Trees:")
+    print("BF:", sp_tree1)
+    print("BNW", sp_tree2, "\n")
+    
     assert dist1 == dist2
+    assert sp_tree1 == sp_tree2
 
 if __name__ == "__main__":
     test_bellman_ford()

@@ -11,6 +11,7 @@ def bellman_ford(graph, source):
     assert source in graph.get_vertices()
 
     dist: dict[int, int] = {}
+    prev = {v:v for v in graph.get_vertices()}
     dist[source] = 0
 
     # Run through |V|-1 iterations of relaxing all edges
@@ -18,13 +19,20 @@ def bellman_ford(graph, source):
         for u, v, w in graph.get_edges():
             if u in dist and (v not in dist or dist[u] + w < dist[v]):
                 dist[v] = dist[u] + w
+                prev[v] = u
 
     # If can still update distances, then there exists a neg cycle
     for u, v, w in graph.get_edges():
         if u in dist and v in dist and dist[u] + w < dist[v]:
             return -1
+    
+    # Create shortest path tree from prev
+    sp_tree = defaultdict(set)
+    for curr_node, prev_node in prev.items():
+        if curr_node != prev_node:
+            sp_tree[prev_node].add(curr_node)
 
-    return dist
+    return dist, sp_tree
 
 
 if __name__ == '__main__':

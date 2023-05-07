@@ -33,15 +33,17 @@ def add_price_fns(phi1, phi2):
     assert len(phi1) == len(phi2)
     return defaultdict(int, {v: phi1[v] + phi2[v] for v in phi1.keys()})
 
-def prev_to_distances(G: Graph, source: Union[str, int], sp_tree: Dict) -> Dict:
+def sp_tree_to_dist(G: Graph, source: Union[str, int], sp_tree: Dict) -> Dict:
     dist = {source: 0}
     q = deque()
     q.append(source)
     
     while q:
         node = q.popleft()
-        for child in sp_tree[node]:
-            dist[child] = dist[source] + G.get_edge_weight(node, child)
+        if node in sp_tree:
+            for child in sp_tree[node]:
+                dist[child] = dist[node] + G.get_edge_weight(node, child)
+                q.append(child)
     
     return dist
     
