@@ -1,5 +1,3 @@
-import random
-import numpy as np
 from collections import defaultdict
 
 class Graph:
@@ -102,30 +100,3 @@ class SubGraph:
             for v, w in self.get_adj(u):
                 s += f"{u} {v} {w}\n"
         return s
-
-def generate_random_graph(n: int):
-    G = Graph()
-    for i in range(n):
-        G.add_vertex(i)
-
-    p = 1.3 * np.log(n) / n
-    for i in range(n):
-        for j in range(n):
-            if i != j and random.random() < p:
-                G.add_edge(i, j, random.randint(10, 100))
-
-    return G
-
-def generate_negative_random_graph(n: int, W: int =1000):
-    G = Graph()
-    for i in range(n):
-        G.add_vertex(i)
-
-    p = 1.3 * np.log(n) / n
-    for i in range(n):
-        for j in range(i+1, n):
-            if random.random() < p:
-                G.add_edge(i, j, random.randint(-W, W))
-
-    return G
-

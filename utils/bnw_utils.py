@@ -97,6 +97,7 @@ def create_scc_dag(G: Graph, vertex_to_scc: defaultdict[int, int]) -> Graph:
         if (uu, vv) in seen:
             continue
         seen.add((uu, vv))
-        dag.add_edge(uu, vv, 1)
+        if uu != vv:
+            dag.add_edge(uu, vv, 1)
     return dag
 

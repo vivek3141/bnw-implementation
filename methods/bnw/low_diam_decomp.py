@@ -19,7 +19,7 @@ def ldd(G: Union[SubGraph, Graph], D: int, G_0: Graph, c=1, n=None) -> Set:
     if n is None:
         n = G.get_num_vertices()
 
-    # Line 2: G_0 ← G, Erem ← ∅
+    # Line 2: G ← G_0, Erem ← ∅
     E_rem = set()
 
     ############################################
@@ -67,15 +67,18 @@ def ldd(G: Union[SubGraph, Graph], D: int, G_0: Graph, c=1, n=None) -> Set:
     light_all = light_in.union(light_out)
     while light_all:
         v = light_all.pop()
+        if v not in vertices:
+            continue
 
         # Line 12: Sample Rv ∼ Geo(p) for p = min{1, 80*log2(n)/D}
         p = min(1, 80 * log(n, 2) / D)
         R_v = geometric(p)
 
         # Line 13: Compute ball_*(v, Rv).
-        # Line 14: E_boundary ← boundary(ball_*(v, Rv))
         edges = G.get_rev if v in light_in else G.get_adj
         ball = set(dijkstra_distance(R_v, v, edges))
+        
+        # Line 14: E_boundary ← boundary(ball_*(v, Rv))
         E_boundary = boundary(G, ball) if v in light_in else boundary_rev(G, ball)
 
         # Line 15: Terminate
@@ -84,10 +87,13 @@ def ldd(G: Union[SubGraph, Graph], D: int, G_0: Graph, c=1, n=None) -> Set:
 
         # Line 16: Recurse
         E_recurse = ldd(SubGraph(G_0, ball), D, G_0, c=c, n=n)
-
+        
+        # Line 17-18: update E_rem and remove ball from G
         E_rem = E_rem.union(E_boundary).union(E_recurse)
+        for v_ball in ball:
+            vertices.remove(v_ball)
         G = SubGraph(G_0, vertices)
-    
+            
     # Line 19-20: Terminate (check that remaining vertices have small weak diameter in initial input graph G_0)
     v = G.get_any_vertex()
     ball_in_v = set(dijkstra_distance(D//2, v, G_0.get_rev))

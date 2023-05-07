@@ -2,6 +2,7 @@ import numpy as np
 import random
 import argparse
 from utils.graph import *
+from utils.test_utils import *
 from methods.bellman_ford import bellman_ford
 from methods.bnw.bnw import bnw
 
@@ -26,12 +27,14 @@ def test_bnw(debug=False):
     np.random.seed(1337)
 
     for i in range(1, 10):
+        print(f"Graph {i}:")
         G = generate_negative_random_graph(1000)
         # print(G, "\n")
         
         dist1, sp_tree1 = bellman_ford(G, 0)
         if dist1 == -1 and sp_tree1 == -1:
             print(f"Skipped i={i} because there exists a negative cycle.")
+            continue
         dist2, sp_tree2 = bnw(G, 0, debug)
         # print("Shortest Path Distances:")
         # print("BF:", dist1)

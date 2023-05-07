@@ -3,6 +3,7 @@ import numpy as np
 import random
 from utils.find_sccs import find_sccs
 from utils.graph import *
+from utils.test_utils import *
 from methods.bnw.low_diam_decomp import *
 from methods.dijkstra import *
 
