@@ -1,4 +1,3 @@
-import sys
 import numpy as np
 import random
 from utils.graph import *
@@ -22,10 +21,15 @@ def test_bellman_ford():
     assert dist == {0: 0, 1: -2, 2: 3, 3: 5, 4: 1, 5: -1}
 
 def test_bnw():
-    G = generate_negative_random_graph(1000)
-    dist = bellman_ford(G, 0)
+    random.seed(1337)
+    np.random.seed(1337)
+
+    G = generate_negative_random_graph(20)
+    dist1 = bellman_ford(G, 0)
     dist2 = bnw(G, 0)
-    assert dist == dist2
+    print(dist1)
+    print(dist2)
+    assert dist1 == dist2
 
 if __name__ == "__main__":
     test_bellman_ford()

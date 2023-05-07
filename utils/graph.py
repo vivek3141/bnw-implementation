@@ -115,7 +115,7 @@ def generate_negative_random_graph(n: int):
     for i in range(n):
         for j in range(i+1, n):
             if random.random() < p:
-                G.add_edge(i, j, random.randint(-10, 100))
+                G.add_edge(i, j, random.randint(-100, 100))
 
     return G
 

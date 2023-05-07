@@ -24,7 +24,5 @@ def bnw(G_in: Graph, source: int): # G_in = (V, E, w_in)
 
     G_star = get_modified_graph(G_in, scale=1, B=0, edges=None, phi=phi)
     T = dijkstra(G_star, source)
-    return T # TODO: might want to process T to yield the actual shortest distances
-
-
+    return T
 
