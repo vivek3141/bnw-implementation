@@ -24,21 +24,24 @@ def test_bnw():
     random.seed(1337)
     np.random.seed(1337)
 
-    G = generate_negative_random_graph(100)
-    print(G)
-    print()
-    dist1, sp_tree1 = bellman_ford(G, 0)
-    dist2, sp_tree2 = bnw(G, 0)
-    print("Shortest Path Distances:")
-    print("BF:", dist1)
-    print("BNW:", dist2)
+    for i in range(2, 6):
+        G = generate_negative_random_graph(10 ** i)
+        # print(G, "\n")
+        
+        dist1, sp_tree1 = bellman_ford(G, 0)
+        if dist1 == -1 and sp_tree1 == -1:
+            print(f"Skipped i={i} because there exists a negative cycle.")
+        dist2, sp_tree2 = bnw(G, 0)
+        # print("Shortest Path Distances:")
+        # print("BF:", dist1)
+        # print("BNW:", dist2)
 
-    print("\nShortest Path Trees:")
-    print("BF:", sp_tree1)
-    print("BNW", sp_tree2, "\n")
+        # print("\nShortest Path Trees:")
+        # print("BF:", sp_tree1)
+        # print("BNW", sp_tree2, "\n")
 
-    assert dist1 == dist2
-    assert sp_tree1 == sp_tree2
+        assert dist1 == dist2
+        assert sp_tree1 == sp_tree2
 
 if __name__ == "__main__":
     test_bellman_ford()
