@@ -34,41 +34,40 @@ def scale_down(G: Graph, Delta: int, B: int, n=None) -> Dict:
         # PHASE 0: Decompose V into SCCs V1, V2, ... with weak diameter dB in G #
         #########################################################################
 
-        print(G_geq0_B.get_num_vertices())
-
         # Line 4
-        E_rem = ldd(G_geq0_B, d * B, G_geq0_B, n=n)
+        Erem = ldd(G_geq0_B, d * B, G_geq0_B, n=n)
 
-        new_G = Graph()
-        for i in range(n):
-            new_G.add_vertex(i)
-        for u, v, w in G.get_edges():
-            if (u,v,w) not in E_rem:
-                new_G.add_edge(u, v, w)
+        G_Erem = get_modified_graph(G, edges=filter(lambda edge: edge not in Erem, G.get_edges()))
 
         # Line 5
-        sccs = find_sccs(new_G)
+        sccs = find_sccs(G_Erem)
         scc_map = defaultdict(int)
         for idx in range(len(sccs)):
             scc = sccs[idx]
             for node in scc:
                 scc_map[node] = idx
 
-        # PHASE 1: Make edges inside the SCCs G^B[V_i] non-negative
+        #############################################################
+        # PHASE 1: Make edges inside the SCCs G^B[V_i] non-negative #
+        #############################################################
+
         # Line 6
         H = get_modified_graph(G, edges=filter(lambda edge: scc_map[edge[0]] == scc_map[edge[1]], G.get_edges()))
 
         # Line 7
         phi_1 = scale_down(G=H, Delta=d, B=B)
 
-        # PHASE 2: Make all edges in G^B \ E^rem non-negative
-        G_phi1_B_Erem = get_modified_graph(G=new_G, B=B, phi=phi_1)
+        #######################################################
+        # PHASE 2: Make all edges in G^B \ E^rem non-negative #
+        #######################################################
+        G_phi1_B_Erem = get_modified_graph(G=G_Erem, B=B, phi=phi_1)
         psi = fix_dag_edges(G=G_phi1_B_Erem, SCCs=sccs)
         phi_2 = add_price_fns(phi_1, psi)
 
     # PHASE 3: Make all edges in G^B non-negative
     G_phi2_B = get_modified_graph(G=G, B=B, phi=phi_2)
     psi_prime = elim_neg(G_phi2_B)
+
     phi_3 = add_price_fns(phi_2, psi_prime)
 
     return phi_3

@@ -25,7 +25,7 @@ def bellman_ford(graph, source):
     for u, v, w in graph.get_edges():
         if u in dist and v in dist and dist[u] + w < dist[v]:
             return -1
-    
+
     # Create shortest path tree from prev
     sp_tree = defaultdict(set)
     for curr_node, prev_node in prev.items():

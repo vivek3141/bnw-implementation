@@ -37,7 +37,7 @@ class Graph:
         for v in self.vertices:
             break
         return v
-    
+
     def get_edge_weight(self, u, v):
         return self.edge_weights[(u, v)]
 
@@ -58,10 +58,8 @@ class Graph:
     def __str__(self):
         s = ""
         for u in sorted(list(self.vertices)):
-            s += str(u) + ": "
             for v, w in self.get_adj(u):
-                s += str(v) + "(" + str(w) + "), "
-            s += "\n"
+                s += f"{u} {v} {w}\n"
         return s
 
 class SubGraph:
@@ -97,6 +95,13 @@ class SubGraph:
 
     def get_num_vertices(self):
         return len(self.subset)
+
+    def __str__(self):
+        s = ""
+        for u in sorted(list(self.get_vertices())):
+            for v, w in self.get_adj(u):
+                s += f"{u} {v} {w}\n"
+        return s
 
 def generate_random_graph(n: int):
     G = Graph()

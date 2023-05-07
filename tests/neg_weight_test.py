@@ -24,17 +24,19 @@ def test_bnw():
     random.seed(1337)
     np.random.seed(1337)
 
-    G = generate_negative_random_graph(20)
+    G = generate_negative_random_graph(100)
+    print(G)
+    print()
     dist1, sp_tree1 = bellman_ford(G, 0)
     dist2, sp_tree2 = bnw(G, 0)
     print("Shortest Path Distances:")
     print("BF:", dist1)
     print("BNW:", dist2)
-    
+
     print("\nShortest Path Trees:")
     print("BF:", sp_tree1)
     print("BNW", sp_tree2, "\n")
-    
+
     assert dist1 == dist2
     assert sp_tree1 == sp_tree2
 

@@ -37,16 +37,16 @@ def sp_tree_to_dist(G: Graph, source: Union[str, int], sp_tree: Dict) -> Dict:
     dist = {source: 0}
     q = deque()
     q.append(source)
-    
+
     while q:
         node = q.popleft()
         if node in sp_tree:
             for child in sp_tree[node]:
                 dist[child] = dist[node] + G.get_edge_weight(node, child)
                 q.append(child)
-    
+
     return dist
-    
+
 
 """
 Helper Methods for Low-Diameter Decomposition (LDD)
