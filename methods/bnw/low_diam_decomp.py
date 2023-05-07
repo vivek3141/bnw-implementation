@@ -1,4 +1,3 @@
-import numpy as np
 from numpy.random import choice, geometric
 
 from utils.graph import Graph, SubGraph
@@ -28,7 +27,7 @@ def ldd(G: SubGraph | Graph, D: int, G_0: Graph, c=1, n=None):
     ############################################
 
     # Line 3: k ← c ln(n) for large enough constant c
-    k = min(int(c * np.log(n)), G.get_num_vertices())
+    k = min(int(c * log(n, 2)), G.get_num_vertices())
 
     # Line 4: S ← {s1, ..., sk}, where each s_i is a random node in V
     S = choice(list(G.get_vertices()), size=k) # sample w/ replacement
@@ -70,7 +69,7 @@ def ldd(G: SubGraph | Graph, D: int, G_0: Graph, c=1, n=None):
         v = light_all.pop()
 
         # Line 12: Sample Rv ∼ Geo(p) for p = min{1, 80*log2(n)/D}
-        p = min(1, 80 * np.log(n) / D)
+        p = min(1, 80 * log(n, 2) / D)
         R_v = geometric(p)
 
         # Line 13: Compute ball_*(v, Rv).

@@ -8,6 +8,7 @@ from methods.dijkstra import *
 
 def test_ldd():
     n = 200
+
     sys.setrecursionlimit(n*10)
     random.seed(1337)
     np.random.seed(1337)

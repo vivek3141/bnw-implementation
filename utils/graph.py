@@ -106,3 +106,16 @@ def generate_random_graph(n: int):
 
     return G
 
+def generate_negative_random_graph(n: int):
+    G = Graph()
+    for i in range(n):
+        G.add_vertex(i)
+
+    p = 1.3 * np.log(n) / n
+    for i in range(n):
+        for j in range(i+1, n):
+            if random.random() < p:
+                G.add_edge(i, j, random.randint(-10, 100))
+
+    return G
+

@@ -23,7 +23,7 @@ def scale_down(G: Graph, Delta: int, B: int, n=None):
         n = G.get_num_vertices()
 
     # Lines 1-2
-    phi_2 = {v: 0 for v in G.get_vertices()}
+    phi_2 = defaultdict(int, {v: 0 for v in G.get_vertices()})
     if Delta > 2:
         # Line 3
         d = Delta // 2
@@ -34,7 +34,7 @@ def scale_down(G: Graph, Delta: int, B: int, n=None):
         #########################################################################
 
         # Line 4
-        E_rem = ldd(G=G_geq0_B, D=d*B, n=n)
+        E_rem = ldd(G_geq0_B, d * B, G_geq0_B, n=n)
 
         new_G = Graph()
         for i in range(n):
@@ -70,8 +70,6 @@ def scale_down(G: Graph, Delta: int, B: int, n=None):
     G_phi2_B = get_modified_graph(G=G, B=B, phi=phi_2)
     psi_prime = elim_neg(G_phi2_B)
     phi_3 = add_price_fns(phi_2, psi_prime)
-
-    # TODO: check if w_phi3^B ≥ 0 for all e ∈ E
 
     return phi_3
 

@@ -6,7 +6,7 @@ Run the Bellman-Ford algorithm on a graph
 Input: Graph object, source node
 Output: Dictionary of shortest paths from source node to all other nodes
 """
-def dijkstra(graph, source):
+def bellman_ford(graph, source):
     assert isinstance(graph, Graph)
     assert source in graph.get_vertices()
 

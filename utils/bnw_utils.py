@@ -28,7 +28,7 @@ def round_up_power_2(x: int):
 
 def add_price_fns(phi1, phi2):
     assert len(phi1) == len(phi2)
-    return {v: phi1[v] + phi2[v] for v in phi1.keys()}
+    return defaultdict(int, {v: phi1[v] + phi2[v] for v in phi1.keys()})
 
 """
 Helper Methods for Low-Diameter Decomposition (LDD)
