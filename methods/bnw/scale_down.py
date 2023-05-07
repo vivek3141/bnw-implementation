@@ -5,8 +5,9 @@ from methods.bnw.low_diam_decomp import ldd
 from utils.graph import Graph
 from utils.find_sccs import find_sccs
 from utils.bnw_utils import *
+import time
 
-def scale_down(G: Graph, Delta: int, B: int, n=None) -> Dict:
+def scale_down(G: Graph, Delta: int, B: int, n=None, debug=False) -> Dict:
     """
     INPUT REQUIREMENTS:
         (a) B is positive integer, w is integral, and w(e) ≥ −2B for all e ∈ E
@@ -35,7 +36,10 @@ def scale_down(G: Graph, Delta: int, B: int, n=None) -> Dict:
         #########################################################################
 
         # Line 4
+        start_time = time.time()
         Erem = ldd(G_geq0_B, d * B, G_geq0_B, n=n)
+        if debug:
+            print("LDD runtime:", time.time() - start_time)
 
         G_Erem = get_modified_graph(G, edges=filter(lambda edge: edge not in Erem, G.get_edges()))
 
@@ -61,12 +65,21 @@ def scale_down(G: Graph, Delta: int, B: int, n=None) -> Dict:
         # PHASE 2: Make all edges in G^B \ E^rem non-negative #
         #######################################################
         G_phi1_B_Erem = get_modified_graph(G=G_Erem, B=B, phi=phi_1)
+        
+        start_time = time.time()
         psi = fix_dag_edges(G=G_phi1_B_Erem, SCCs=sccs)
+        if debug:
+            print("FixDAGEdges runtime:", time.time() - start_time)
+        
         phi_2 = add_price_fns(phi_1, psi)
 
     # PHASE 3: Make all edges in G^B non-negative
     G_phi2_B = get_modified_graph(G=G, B=B, phi=phi_2)
+    
+    start_time = time.time()
     psi_prime = elim_neg(G_phi2_B)
+    if debug:
+        print("ElimNeg runtime:", time.time() - start_time, "\n")
 
     phi_3 = add_price_fns(phi_2, psi_prime)
 
