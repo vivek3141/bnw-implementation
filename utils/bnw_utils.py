@@ -73,6 +73,15 @@ def boundary_rev(G: Graph | SubGraph, S: set):
 Helper Methods for Fix-DAG-Edges
 """
 
-def create_scc_dag(G: Graph, SCCs: list) -> Graph:
-    # TODO: returns DAG of SCCs
-    pass
+def create_scc_dag(G: Graph, vertex_to_scc: defaultdict[int, int]) -> Graph:
+    dag = Graph()
+    seen = set()
+    for u, v, _ in G.get_edges():
+        uu = vertex_to_scc[u]
+        vv = vertex_to_scc[v]
+        if (uu, vv) in seen:
+            continue
+        seen.add((uu, vv))
+        dag.add_edge(uu, vv, 1)
+    return dag
+
