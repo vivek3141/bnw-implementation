@@ -1,7 +1,7 @@
-from typing import Callable, Union
+from typing import Callable, Union, List, Tuple, Dict
 from math import log, ceil
 from utils.graph import Graph, SubGraph
-from collections import defaultdict
+from collections import defaultdict, deque
 import heapq as hq
 
 def get_modified_graph(G: Graph, scale=1, B=0, is_max_0=False, edges=None, phi=defaultdict(int)):
@@ -33,6 +33,19 @@ def add_price_fns(phi1, phi2):
     assert len(phi1) == len(phi2)
     return defaultdict(int, {v: phi1[v] + phi2[v] for v in phi1.keys()})
 
+def prev_to_distances(G: Graph, source: Union[str, int], sp_tree: Dict) -> Dict:
+    dist = {source: 0}
+    q = deque()
+    q.append(source)
+    
+    while q:
+        node = q.popleft()
+        for child in sp_tree[node]:
+            dist[child] = dist[source] + G.get_edge_weight(node, child)
+    
+    return dist
+    
+
 """
 Helper Methods for Low-Diameter Decomposition (LDD)
 """
@@ -40,7 +53,7 @@ Helper Methods for Low-Diameter Decomposition (LDD)
 def shared_elems(set1: set, set2: set):
     return any([elem in set2 for elem in set1])
 
-def dijkstra_distance(D: int, source: int, edges: Callable[[int], list[tuple[int,int]]]):
+def dijkstra_distance(D: int, source: int, edges: Callable[[int], List[Tuple[int,int]]]):
     dist = {}
     pq = [(0, source)]
 

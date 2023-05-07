@@ -26,7 +26,7 @@ def test_bnw():
 
     G = generate_negative_random_graph(20)
     dist1 = bellman_ford(G, 0)
-    dist2 = bnw(G, 0)
+    dist2, _ = bnw(G, 0)
     print(dist1)
     print(dist2)
     assert dist1 == dist2

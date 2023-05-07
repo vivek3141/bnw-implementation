@@ -6,12 +6,16 @@ from methods.dijkstra import dijkstra
 from utils.graph import Graph
 from utils.bnw_utils import *
 
-def bnw(G_in: Graph, source: Union[str, int]): # G_in = (V, E, w_in)
+def bnw(G_in: Graph, s_in: Union[str, int]): # G_in = (V, E, w_in)
     """Main Procedure for BNW Algorithm
 
     Args:
         G_in: graph with integral, possibly negative edge weights in the range [-W, ... W]
         s_in: source node
+        
+    Returns:
+        (1) shortest path distances from s_in to all nodes in G_in
+        (2) shortest path tree
     """
     n = G_in.get_num_vertices()
 
@@ -24,6 +28,8 @@ def bnw(G_in: Graph, source: Union[str, int]): # G_in = (V, E, w_in)
         phi = add_price_fns(phi, psi)
 
     G_star = get_modified_graph(G_in, scale=1, B=0, edges=None, phi=phi)
-    T = dijkstra(G_star, source)
-    return T
+    _, sp_tree = dijkstra(G_star, s_in) # obtain the sp tree of G_in
+    dist = prev_to_distances(G_in, s_in, sp_tree)
+    
+    return dist, sp_tree 
 

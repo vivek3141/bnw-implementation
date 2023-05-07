@@ -1,5 +1,5 @@
 import unittest
-from graph import Graph
+from utils.graph import Graph
 
 class TestGraph(unittest.TestCase):
     def setUp(self):
@@ -17,7 +17,7 @@ class TestGraph(unittest.TestCase):
         self.assertEqual(self.graph.get_adj(3), [])
 
     def test_get_vertices(self):
-        self.assertEqual(self.graph.get_vertices(), [0, 1, 2, 3])
+        self.assertEqual(self.graph.get_vertices(), {0, 1, 2, 3})
 
     def test_get_edges(self):
         self.assertEqual(self.graph.get_edges(), [(0, 1, 5), (0, 2, 3), (1, 2, 2), (1, 3, 6), (2, 3, 7)])

@@ -28,7 +28,7 @@ def test_ldd():
     print(len(G.get_edges()), len(new_G.get_edges()), len(E_res), len(new_G.vertices))
     for scc in find_sccs(new_G):
         for node in scc:
-            dist = dijkstra(new_G, node)
+            dist, _ = dijkstra(new_G, node)
             for other in scc:
                 assert dist[other] <= D
 
