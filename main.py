@@ -17,7 +17,7 @@ def run_n_benchmarks(graph_sizes: list, default_W=1000, input_graph_dir="input_g
             if f"_sparse_n={n}_W={default_W}_" in file_name:
                 graph_files[n].append(file_name)
                 print(n, file_name)
-                
+
 # def run_W_benchmarks(Ws: list, input_graph_dir="input_graphs/"):
     
 # def run_density_benchmarks(densities: list, input_graph_dir="input_graphs/")

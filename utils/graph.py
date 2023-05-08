@@ -6,6 +6,7 @@ class Graph:
         self.rev = defaultdict(list) # adjacency list
         self.edge_weights = dict()
         self.vertices: set[int] = set()
+        self.num_edges = 0
 
     def add_vertex(self, v):
         self.vertices.add(v)
@@ -19,6 +20,7 @@ class Graph:
         self.adj[u].append((v, w))
         self.rev[v].append((u, w))
         self.edge_weights[(u, v)] = w
+        self.num_edges += 1
 
     def get_adj(self, u):
         return self.adj[u]
@@ -48,6 +50,9 @@ class Graph:
 
     def get_num_vertices(self):
         return len(self.vertices)
+    
+    def get_num_edges(self):
+        return self.num_edges
 
     """
     Print graph of the format
