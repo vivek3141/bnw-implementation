@@ -1,3 +1,6 @@
+# Graph Data Folder
+input_graphs/*
+
 # Model Checkpoints
 *.pth
 
