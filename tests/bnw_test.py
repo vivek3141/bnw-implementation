@@ -1,4 +1,3 @@
-from viztracer import VizTracer
 import numpy as np
 import random
 import argparse
@@ -27,9 +26,6 @@ def test_bnw(graph_size=1000, debug=False):
     random.seed(1337)
     np.random.seed(1337)
 
-    tracer = VizTracer()
-    tracer.start()
-
     print("Test graphs with strictly non-negative edge weights")
     for i in range(1, 10):
         print(f"    Graph {i}:")
@@ -39,9 +35,6 @@ def test_bnw(graph_size=1000, debug=False):
 
         assert dist1 == dist2
         assert sp_tree1 == sp_tree2
-
-    tracer.stop()
-    tracer.save("profile.json")
 
     print("Test graphs with possibly negative edge weights")
     for i in range(1, 10):
