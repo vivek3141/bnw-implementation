@@ -89,7 +89,10 @@ def ldd(G: Union[SubGraph, Graph], D: int, G_0: Graph, c=1, n=None) -> Set:
         E_recurse = ldd(SubGraph(G_0, ball), D, G_0, c=c, n=n)
         
         # Line 17-18: update E_rem and remove ball from G
-        E_rem = E_rem.union(E_boundary).union(E_recurse)
+        for edge in E_boundary:
+            E_rem.add(edge)
+        for edge in E_recurse:
+            E_rem.add(edge)
         for v_ball in ball:
             vertices.remove(v_ball)
         G = SubGraph(G_0, vertices)

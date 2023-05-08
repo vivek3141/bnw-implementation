@@ -1,3 +1,4 @@
+from viztracer import VizTracer
 import numpy as np
 import random
 import argparse
@@ -26,20 +27,26 @@ def test_bnw(graph_size=1000, debug=False):
     random.seed(1337)
     np.random.seed(1337)
 
+    tracer = VizTracer()
+    tracer.start()
+
     print("Test graphs with strictly non-negative edge weights")
     for i in range(1, 10):
         print(f"    Graph {i}:")
-        G = generate_random_graph(1000)
+        G = generate_random_graph(graph_size)
         dist1, sp_tree1 = bellman_ford(G, 0)
         dist2, sp_tree2 = bnw(G, 0, debug)
 
         assert dist1 == dist2
         assert sp_tree1 == sp_tree2
-        
+
+    tracer.stop()
+    tracer.save("profile.json")
+
     print("Test graphs with possibly negative edge weights")
     for i in range(1, 10):
-        G = generate_negative_random_graph(1000)
-        
+        G = generate_negative_random_graph(graph_size)
+
         dist1, sp_tree1 = bellman_ford(G, 0)
         if dist1 == -1 and sp_tree1 == -1:
             print(f"Skipped i={i} because there exists a negative cycle.")
@@ -51,11 +58,11 @@ def test_bnw(graph_size=1000, debug=False):
         assert dist1 == dist2
         assert sp_tree1 == sp_tree2
         print(f"Graph {i} Test Passed!")
-        
+
     print("Test Negative Weight Graphs")
     for i in range(1, 10):
-        G = generate_negative_random_graph(1000)
-        
+        G = generate_negative_random_graph(graph_size)
+
         dist1, sp_tree1 = bellman_ford(G, 0)
         if dist1 == -1 and sp_tree1 == -1:
             print(f"Skipped i={i} because there exists a negative cycle.")
@@ -71,7 +78,7 @@ if __name__ == "__main__":
     parser.add_argument('--graph_size', type=int, default=1000)
     parser.add_argument('--debug', action="store_true", default=False)
     args = parser.parse_args()
-    
+
     test_bellman_ford()
     test_bnw(graph_size=args.graph_size, debug=args.debug)
     print("All tests passed!")
