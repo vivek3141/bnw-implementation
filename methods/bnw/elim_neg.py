@@ -5,11 +5,12 @@ import heapq as hq
 
 
 def elim_neg(G: Graph) -> Dict:
-    G_s = deepcopy(G) # not sure if this works lol
+    G.add_vertex(-1)
     for v in G.get_vertices():
-        G_s.add_edge(-1, v, 0)
+        if v != -1:
+            G.add_edge(-1, v, 0)
 
-    dist = {v: 999999999999999999 for v in G_s.get_vertices()}
+    dist = {v: 999999999999999999 for v in G.get_vertices()}
     dist[-1] = 0
 
     pq: list[tuple[int,int]] = [(0, -1)]
@@ -22,7 +23,7 @@ def elim_neg(G: Graph) -> Dict:
             _, v = hq.heappop(pq)
             marked.add(v)
 
-            for x, weight in G_s.get_adj(v):
+            for x, weight in G.get_adj(v):
                 if weight >= 0:
                     if dist[v] + weight < dist[x]:
                         dist[x] = dist[v] + weight
@@ -31,7 +32,7 @@ def elim_neg(G: Graph) -> Dict:
 
         # Bellman-Ford Phase
         for v in marked:
-            for x, weight in G_s.get_adj(v):
+            for x, weight in G.get_adj(v):
                 if weight < 0: # E^neg(G)
                     if dist[v] + weight < dist[x]:
                         dist[x] = dist[v] + weight
@@ -39,5 +40,5 @@ def elim_neg(G: Graph) -> Dict:
 
         # note that we unmark all vertices at end of stage
 
-    phi = {v: dist[v] for v in G.get_vertices()}
+    phi = {v: dist[v] for v in G.get_vertices() if v != -1}
     return phi
