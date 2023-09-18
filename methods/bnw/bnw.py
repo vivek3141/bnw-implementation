@@ -1,10 +1,11 @@
-# Full implementation of BNW, can reference https://github.com/nevingeorge/Negative-Weight-SSSP
 import math
 from typing import Union
 from methods.bnw.scale_down import scale_down
 from methods.dijkstra import dijkstra
 from utils.graph import Graph
 from utils.bnw_utils import *
+
+# TODO: doesn't guarantee that all in/out-degrees are constant
 
 def bnw(G_in: Graph, s_in: Union[str, int], debug=False): # G_in = (V, E, w_in)
     """Main Procedure for BNW Algorithm
